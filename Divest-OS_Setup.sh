@@ -15,4 +15,3 @@ repo sync; #This part will take a while
 source ../../Scripts/init.sh;
 source build/envsetup.sh && breakfast lineage_davinci-user && make -j20 generate_verity_key otatools;
 source ../../Scripts/Generate_Signing_Keys.sh davinci;
-
