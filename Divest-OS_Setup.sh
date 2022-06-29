@@ -12,6 +12,6 @@ cat ../../Manifests/Manifest_LAOS-19.1.xml > .repo/local_manifests/local_manifes
 repo init -u https://github.com/LineageOS/android.git -b lineage-19.1;
 repo sync; #This part will take a while
 #Generate signing keys
-source ../../Scripts/init.sh;
-source build/envsetup.sh && breakfast lineage_davinci-user && make -j20 generate_verity_key otatools;
-source ../../Scripts/Generate_Signing_Keys.sh davinci;
+#source ../../Scripts/init.sh;
+#source build/envsetup.sh && breakfast lineage_davinci-user && make -j20 generate_verity_key otatools;
+#source ../../Scripts/Generate_Signing_Keys.sh davinci;
