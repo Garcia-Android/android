@@ -1,3 +1,5 @@
+#!/bin/bash
+
 echo "OTA .zip"
 stat -c '%Y' ~/android/DivestOS/Builds/LineageOS-19.1/release_keys/divested-UNOFFICIAL-*-ota.zip
 ls ~/android/DivestOS/Builds/LineageOS-19.1/release_keys/divested-UNOFFICIAL-*-ota.zip

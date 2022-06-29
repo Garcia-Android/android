@@ -1,3 +1,5 @@
+#!/bin/bash
+
 mkdir -p ~/android && cd ~/android;
 git clone https://gitlab.com/divested-mobile/divestos-build.git DivestOS;
 cd DivestOS;
