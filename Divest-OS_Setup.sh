@@ -6,7 +6,6 @@ cd DivestOS;
 git submodule update --init --recursive; #must have git-lfs installed
 mkdir -p Build/LineageOS-19.1/.repo/local_manifests Builds;
 git apply ~/android/DivestOS-Build.patch;
-cd PrebuiltApps && git apply ~/android/DivestOS-PrebuiltApps.patch && cd ..;
 cd Build/LineageOS-19.1;
 cat ../../Manifests/Manifest_LAOS-19.1.xml > .repo/local_manifests/local_manifest.xml;
 repo init -u https://github.com/LineageOS/android.git -b lineage-19.1;
