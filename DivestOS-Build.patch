@@ -156,16 +156,15 @@ index 72d43e5c..4e30cca7 100644
  
  </manifest>
 diff --git a/Patches/Common/android_vendor_divested/packages.mk b/Patches/Common/android_vendor_divested/packages.mk
-index b0e181d5..69123a18 100644
+index b0e181d5..adc58b10 100644
 --- a/Patches/Common/android_vendor_divested/packages.mk
 +++ b/Patches/Common/android_vendor_divested/packages.mk
 @@ -1,7 +1,7 @@
  # F-Droid
  PRODUCT_PACKAGES += \
--    F-DroidOfficial
+     F-DroidOfficial
 -#    F-DroidPrivilegedExtensionOfficial
-+    FDroid \
-+    FDroidPrivilegedExtension
++#   F-DroidPrivilegedExtensionOfficial
  
  # Replacements
  PRODUCT_PACKAGES += \
@@ -176,7 +175,7 @@ index b0e181d5..69123a18 100644
 -    TalkBack \
 -    SupportDivestOS
 +    TalkBack
-+#    SupportDivestOS
++#   SupportDivestOS
  
  # Notes
  # - Available (via PrebuiltApps submodule): eSpeakNG
@@ -382,26 +381,32 @@ index 1159a6d8..80d19ad7 100644
  sed -i '/blank for none/,+1 d' "$DOS_BUILD_BASE"/development/tools/make_key;
  
 diff --git a/Scripts/LineageOS-19.1/Patch.sh b/Scripts/LineageOS-19.1/Patch.sh
-index 208a48fd..6de62f04 100644
+index 208a48fd..0604a6b9 100644
 --- a/Scripts/LineageOS-19.1/Patch.sh
 +++ b/Scripts/LineageOS-19.1/Patch.sh
-@@ -54,6 +54,7 @@ cp -r "$DOS_PREBUILT_APPS""SupportDivestOS" "$DOS_BUILD_BASE""packages/apps/"; #
- gpgVerifyDirectory "$DOS_PREBUILT_APPS""android_vendor_FDroid_PrebuiltApps/packages";
+@@ -55,6 +55,13 @@ gpgVerifyDirectory "$DOS_PREBUILT_APPS""android_vendor_FDroid_PrebuiltApps/packa
  cp -r "$DOS_PREBUILT_APPS""android_vendor_FDroid_PrebuiltApps/." "$DOS_BUILD_BASE""vendor/fdroid_prebuilt/"; #Add the prebuilt apps
  cp -r "$DOS_PATCHES_COMMON""android_vendor_divested/." "$DOS_BUILD_BASE""vendor/divested/"; #Add our vendor files
-+rm -rf "vendor/partner_gms/additional_repos.xml/"; #F-Droid additional repos already defined
  
++# Remove duplicate packages from microG
++rm -rf "$DOS_BUILD_BASE""vendor/partner_gms/FDroid/";
++rm -rf "$DOS_BUILD_BASE""vendor/partner_gms/FDroidPrivilegedExtension/";
++rm -rf "$DOS_BUILD_BASE""vendor/partner_gms/additional_repos.xml/";
++rm -rf "$DOS_BUILD_BASE""vendor/partner_gms/IchnaeaNlpBackend/";
++rm -rf "$DOS_BUILD_BASE""vendor/partner_gms/NominatimGeocoderBackend/";
++
  if enterAndClear "art"; then
  if [ "$DOS_GRAPHENE_CONSTIFY" = true ]; then applyPatch "$DOS_PATCHES/android_art/0001-constify_JNINativeMethod.patch"; fi; #Constify JNINativeMethod tables (GrapheneOS)
-@@ -166,6 +167,7 @@ applyPatch "$DOS_PATCHES/android_frameworks_base/326692.patch"; #Skip screen on
+ fi;
+@@ -166,6 +173,7 @@ applyPatch "$DOS_PATCHES/android_frameworks_base/326692.patch"; #Skip screen on
  applyPatch "$DOS_PATCHES/android_frameworks_base/0023-Skip_Screen_Animation.patch"; #SystemUI: Skip screen-on animation in all scenarios (kdrag0n)
  applyPatch "$DOS_PATCHES/android_frameworks_base/0024-Burnin_Protection.patch"; #SystemUI: add burnIn protection (arter97)
  applyPatch "$DOS_PATCHES_COMMON/android_frameworks_base/0007-ABI_Warning.patch"; #Warn when running activity from 32 bit app on ARM64 devices. (AOSP)
-+if [ "$DOS_MICROG_INCLUDED" = "FULL" ]; then applyPatch "$DOS_PATCHES/android_frameworks_base/0002-Signature_Spoofing.patch"; fi; #Allow packages to spoof their signature (microG)
++if [ "$DOS_MICROG_INCLUDED" = "FULL" ]; then applyPatch "$DOS_PATCHES/android_frameworks_base/0002-Signature_Spoofing.patch"; fi; #Allow system packages to spoof their signature (microG)
  hardenLocationConf services/core/java/com/android/server/location/gnss/gps_debug.conf; #Harden the default GPS config
  changeDefaultDNS; #Change the default DNS servers
  sed -i 's/DEFAULT_USE_COMPACTION = false;/DEFAULT_USE_COMPACTION = true;/' services/core/java/com/android/server/am/CachedAppOptimizer.java; #Enable app compaction by default (GrapheneOS)
-@@ -277,6 +279,7 @@ applyPatch "$DOS_PATCHES/android_packages_apps_Settings/0011-Random_MAC.patch";
+@@ -277,6 +285,7 @@ applyPatch "$DOS_PATCHES/android_packages_apps_Settings/0011-Random_MAC.patch";
  applyPatch "$DOS_PATCHES/android_packages_apps_Settings/0009-Install_Restrictions.patch"; #UserManager app installation restrictions (GrapheneOS)
  applyPatch "$DOS_PATCHES/android_packages_apps_Settings/0012-hosts_toggle.patch"; #Add a toggle to disable /etc/hosts lookup (heavily based off of a GrapheneOS patch)
  sed -i 's/if (isFullDiskEncrypted()) {/if (false) {/' src/com/android/settings/accessibility/*AccessibilityService*.java; #Never disable secure start-up when enabling an accessibility service
@@ -409,7 +414,7 @@ index 208a48fd..6de62f04 100644
  fi;
  
  if enterAndClear "packages/apps/SetupWizard"; then
-@@ -389,6 +392,7 @@ if enter "vendor/divested"; then
+@@ -389,6 +398,7 @@ if enter "vendor/divested"; then
  awk -i inplace '!/_lookup/' overlay/common/lineage-sdk/packages/LineageSettingsProvider/res/values/defaults.xml; #Remove all lookup provider overrides
  if [ "$DOS_MICROG_INCLUDED" != "NONE" ]; then echo "PRODUCT_PACKAGES += DejaVuNlpBackend IchnaeaNlpBackend NominatimNlpBackend" >> packages.mk; fi; #Include UnifiedNlp backends
  if [ "$DOS_MICROG_INCLUDED" = "NLP" ]; then echo "PRODUCT_PACKAGES += UnifiedNLP" >> packages.mk; fi; #Include UnifiedNlp
@@ -418,7 +423,7 @@ index 208a48fd..6de62f04 100644
  echo "PRODUCT_PACKAGES += eSpeakNG" >> packages.mk; #PicoTTS needs work to compile on 18.1, use eSpeak-NG instead
  sed -i 's/OpenCamera/SecureCamera/' packages.mk #Use the GrapheneOS camera app
 diff --git a/Scripts/init.sh b/Scripts/init.sh
-index a3a81400..a9886f30 100644
+index a3a81400..d82f4c63 100644
 --- a/Scripts/init.sh
 +++ b/Scripts/init.sh
 @@ -21,14 +21,16 @@
@@ -446,14 +451,9 @@ index a3a81400..a9886f30 100644
  export CCACHE_COMPRESS=1;
  export CCACHE_COMPRESSLEVEL=1;
  #export DOS_BINARY_PATCHER="";
-@@ -39,20 +41,20 @@ export DOS_MALWARE_SCAN_SETTING="quick"; #buildAll() scan speed. Options: quick,
- export DOS_REFRESH_PATCHES=true; #Set true to refresh branch-specific patches on apply
- 
- #Deblobber
--export DOS_DEBLOBBER_REMOVE_ACCESSORIES=true; #Set false to allow use of external accessories that depend on blobs
--export DOS_DEBLOBBER_REMOVE_ATFWD=true; #Set true to remove basic ATFWD blobs
-+export DOS_DEBLOBBER_REMOVE_ACCESSORIES=false; #Set false to allow use of external accessories that depend on blobs
-+export DOS_DEBLOBBER_REMOVE_ATFWD=false; #Set true to remove basic ATFWD blobs
+@@ -42,17 +44,17 @@ export DOS_REFRESH_PATCHES=true; #Set true to refresh branch-specific patches on
+ export DOS_DEBLOBBER_REMOVE_ACCESSORIES=true; #Set false to allow use of external accessories that depend on blobs
+ export DOS_DEBLOBBER_REMOVE_ATFWD=true; #Set true to remove basic ATFWD blobs
  export DOS_DEBLOBBER_REMOVE_AUDIOFX=true; #Set true to remove AudioFX
 -export DOS_DEBLOBBER_REMOVE_APTX=true; #Set true to remove aptX Bluetooth codec
 -export DOS_DEBLOBBER_REMOVE_CNE=true; #Set true to remove all CNE blobs #XXX: Breaks Wi-Fi calling
