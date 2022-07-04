@@ -8,6 +8,4 @@ cd Build/LineageOS-19.1;
 source ../../Scripts/init.sh;
 resetWorkspace;
 patchWorkspace;
-# Optional
-repopick -i 329033; #Trebuchet: implement hidden & protected apps
 buildDevice davinci;
