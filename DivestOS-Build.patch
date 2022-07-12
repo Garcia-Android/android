@@ -372,13 +372,6 @@ index 00000000..a70c8d9f
 +                 if (packageInfo == null) {
 +                     return null;
 +                 }
-diff --git a/Patches/Linux b/Patches/Linux
-index 1f3f2922..e88fc22f 160000
---- a/Patches/Linux
-+++ b/Patches/Linux
-@@ -1 +1 @@
--Subproject commit 1f3f2922f8ff4234ebaedff828c0caef3cc221a4
-+Subproject commit e88fc22ff8f7a3c4492c2bf2790fba62b9f29be8
 diff --git a/Scripts/Generate_Signing_Keys.sh b/Scripts/Generate_Signing_Keys.sh
 index 1159a6d8..80d19ad7 100644
 --- a/Scripts/Generate_Signing_Keys.sh
