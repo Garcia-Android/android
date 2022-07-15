@@ -166,7 +166,7 @@ index 18e9b501..71b48cbd 100644
 -	<project path="kernel/xiaomi/sm8150" name="LineageOS/android_kernel_xiaomi_sm8150" remote="github" />
 +	<project path="device/xiaomi/davinci" name="xiaomi-sm6150/android_device_xiaomi_davinci" remote="github" />
 +	<project path="device/xiaomi/sm6150-common" name="xiaomi-sm6150/android_device_xiaomi_sm6150-common" remote="github" />
-+	<project path="kernel/xiaomi/sm6150" name="xiaomi-sm6150/android_kernel_xiaomi_sm6150" remote="github" />
++	<project path="kernel/xiaomi/sm6150" name="ArianK16a/android_kernel_xiaomi_sm6150" remote="github" />
 +	<project path="vendor/xiaomi" name="xiaomi-sm6150/android_vendor_xiaomi" remote="github" />
  
  </manifest>
