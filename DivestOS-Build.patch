@@ -1,5 +1,5 @@
 diff --git a/Manifests/Manifest_LAOS-19.1.xml b/Manifests/Manifest_LAOS-19.1.xml
-index 18e9b501..71b48cbd 100644
+index 18e9b501..674aea5c 100644
 --- a/Manifests/Manifest_LAOS-19.1.xml
 +++ b/Manifests/Manifest_LAOS-19.1.xml
 @@ -51,6 +51,9 @@
@@ -386,7 +386,7 @@ index 1159a6d8..80d19ad7 100644
  sed -i '/blank for none/,+1 d' "$DOS_BUILD_BASE"/development/tools/make_key;
  
 diff --git a/Scripts/LineageOS-19.1/Patch.sh b/Scripts/LineageOS-19.1/Patch.sh
-index 3314aeb2..261bf1a5 100644
+index d948b05d..e2470ee8 100644
 --- a/Scripts/LineageOS-19.1/Patch.sh
 +++ b/Scripts/LineageOS-19.1/Patch.sh
 @@ -55,6 +55,13 @@ gpgVerifyDirectory "$DOS_PREBUILT_APPS""android_vendor_FDroid_PrebuiltApps/packa
@@ -403,15 +403,15 @@ index 3314aeb2..261bf1a5 100644
  if enterAndClear "art"; then
  if [ "$DOS_GRAPHENE_CONSTIFY" = true ]; then applyPatch "$DOS_PATCHES/android_art/0001-constify_JNINativeMethod.patch"; fi; #Constify JNINativeMethod tables (GrapheneOS)
  fi;
-@@ -126,6 +133,7 @@ sed -i '11iLOCAL_OVERRIDES_PACKAGES := Camera Camera2 LegacyCamera Snap OpenCame
- fi;
- 
- if enterAndClear "frameworks/base"; then
+@@ -167,6 +174,7 @@ applyPatch "$DOS_PATCHES/android_frameworks_base/0023-Skip_Screen_Animation.patc
+ applyPatch "$DOS_PATCHES/android_frameworks_base/0024-Burnin_Protection.patch"; #SystemUI: add burnIn protection (arter97)
+ applyPatch "$DOS_PATCHES/android_frameworks_base/0025-Monet_Toggle.patch"; #Make monet based theming user configurable (GrapheneOS)
+ applyPatch "$DOS_PATCHES_COMMON/android_frameworks_base/0007-ABI_Warning.patch"; #Warn when running activity from 32 bit app on ARM64 devices. (AOSP)
 +if [ "$DOS_MICROG_INCLUDED" = "FULL" ]; then applyPatch "$DOS_PATCHES/android_frameworks_base/0002-Signature_Spoofing.patch"; fi; #Allow system packages to spoof their signature (microG)
- applyPatch "$DOS_PATCHES/android_frameworks_base/0007-Always_Restict_Serial.patch"; #Always restrict access to Build.SERIAL (GrapheneOS)
- applyPatch "$DOS_PATCHES/android_frameworks_base/0008-Browser_No_Location.patch"; #Don't grant location permission to system browsers (GrapheneOS)
- applyPatch "$DOS_PATCHES/android_frameworks_base/0009-SystemUI_No_Permission_Review.patch"; #Allow SystemUI to directly manage Bluetooth/WiFi (GrapheneOS)
-@@ -278,6 +286,7 @@ applyPatch "$DOS_PATCHES/android_packages_apps_Settings/0011-Random_MAC.patch";
+ hardenLocationConf services/core/java/com/android/server/location/gnss/gps_debug.conf; #Harden the default GPS config
+ changeDefaultDNS; #Change the default DNS servers
+ sed -i 's/DEFAULT_USE_COMPACTION = false;/DEFAULT_USE_COMPACTION = true;/' services/core/java/com/android/server/am/CachedAppOptimizer.java; #Enable app compaction by default (GrapheneOS)
+@@ -282,6 +290,7 @@ applyPatch "$DOS_PATCHES/android_packages_apps_Settings/0011-Random_MAC.patch";
  applyPatch "$DOS_PATCHES/android_packages_apps_Settings/0009-Install_Restrictions.patch"; #UserManager app installation restrictions (GrapheneOS)
  applyPatch "$DOS_PATCHES/android_packages_apps_Settings/0012-hosts_toggle.patch"; #Add a toggle to disable /etc/hosts lookup (heavily based off of a GrapheneOS patch)
  sed -i 's/if (isFullDiskEncrypted()) {/if (false) {/' src/com/android/settings/accessibility/*AccessibilityService*.java; #Never disable secure start-up when enabling an accessibility service
@@ -419,7 +419,7 @@ index 3314aeb2..261bf1a5 100644
  fi;
  
  if enterAndClear "packages/apps/SetupWizard"; then
-@@ -394,6 +403,7 @@ if enter "vendor/divested"; then
+@@ -398,6 +407,7 @@ if enter "vendor/divested"; then
  awk -i inplace '!/_lookup/' overlay/common/lineage-sdk/packages/LineageSettingsProvider/res/values/defaults.xml; #Remove all lookup provider overrides
  if [ "$DOS_MICROG_INCLUDED" != "NONE" ]; then echo "PRODUCT_PACKAGES += DejaVuNlpBackend IchnaeaNlpBackend NominatimNlpBackend" >> packages.mk; fi; #Include UnifiedNlp backends
  if [ "$DOS_MICROG_INCLUDED" = "NLP" ]; then echo "PRODUCT_PACKAGES += UnifiedNLP" >> packages.mk; fi; #Include UnifiedNlp
