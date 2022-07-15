@@ -4,7 +4,7 @@ mkdir -p ~/android && cd ~/android || exit;
 git clone https://gitlab.com/divested-mobile/divestos-build.git DivestOS;
 cd DivestOS || exit;
 git submodule update --init --recursive; #must have git-lfs installed
-git submodule foreach --recursive git reset --hard;
+#git submodule foreach --recursive git reset --hard;
 mkdir -p Build/LineageOS-19.1/.repo/local_manifests Builds;
 git apply ~/android/DivestOS-Build.patch;
 cd Build/LineageOS-19.1 || exit;
